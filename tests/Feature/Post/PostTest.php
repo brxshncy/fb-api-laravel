@@ -30,5 +30,11 @@ describe('Post CRUD', function () {
                 'user'
             ]
         ]);
+
+        $this->assertDatabaseHas('posts', [
+            'content' => $postData['content'],
+            'image_url' => $postData['image_url'],
+            'privacy' => $postData['privacy'],
+        ]);
     });
 });
