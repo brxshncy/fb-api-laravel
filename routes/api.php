@@ -22,4 +22,6 @@ Route::prefix('post')->name('post.')->group(function () {
 
 Route::prefix('friendship')->name('friendship.')->group(function () {
     Route::apiResource('/', FriendShipController::class);
+    Route::patch('/{friendship}', [FriendShipController::class, 'update']);
+
 })->middleware('auth:api');

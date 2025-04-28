@@ -13,13 +13,6 @@ class FriendShip extends Model
 
     protected $guarded = [];
     
-    protected $casts = [
-        'status' => FriendShipStatus::class
-    ];
-
-    protected $attributes = [
-        'status' => FriendShipStatus::PENDING
-    ];
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -29,4 +22,11 @@ class FriendShip extends Model
     {
         return $this->belongsTo(User::class, 'friend_id');
     }
+
+    protected $attributes = [
+        'status' => FriendShipStatus::PENDING
+    ];
+    protected $casts = [
+        'status' => FriendShipStatus::class
+    ];
 }

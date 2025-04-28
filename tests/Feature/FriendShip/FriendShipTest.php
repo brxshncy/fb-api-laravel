@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\FriendShipStatus;
+use App\Models\FriendShip;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -26,5 +28,21 @@ describe('Friendship', function () {
         ]);
 
         $this->assertDatabaseHas('friend_ships', ['user_id' => $user->id, 'friend_id' => $friend->id]);
+    });
+
+    it("Added user can accept friend request", function () {
+        $user = User::factory()->create();
+        $friend = User::factory()->create();
+
+        $response = $this->actingAs($user)
+                         ->postJson(route('friendship.store'), ['friend_id' => $friend->id])
+                         ->assertStatus(201);
+        
+        $friendship = FriendShip::where('user_id' ,$user->id)->where('friend_id', $friend->id)->first();
+    
+        $response = $this->actingAs($friend)
+                ->patchJson(route('friendship.update',  $friendship->id), ['decision' => FriendShipStatus::ACCEPTED]);
+        
+        dd($response->getContent());
     });
 });

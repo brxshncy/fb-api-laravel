@@ -20,7 +20,7 @@ class FriendShipController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFriendShipRequest $request)
+    public function store(StoreFriendShipRequest $request): FriendShipResource
     {
         $friendRequest = FriendShip::create(
             $request->merge(['user_id' => auth()->id()])->toArray()
@@ -42,9 +42,12 @@ class FriendShipController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFriendShipRequest $request, FriendShip $friendShip)
+    public function update(UpdateFriendShipRequest $request, FriendShip $friendship)
     {
-        //
+        $friendship->update(['status' => $request->decision]);
+        $friendship->load(['user', 'friend']);
+
+        return (new FriendShipResource($friendship));
     }
 
     /**
