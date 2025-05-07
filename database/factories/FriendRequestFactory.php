@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Enums\FriendShipStatus;
+use App\Enums\FriendRequestStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FriendShip>
  */
-class FriendShipFactory extends Factory
+class FriendRequestFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -29,7 +29,7 @@ class FriendShipFactory extends Factory
         return [
             'user_id' => $user->id,
             'friend_id' => $friend->id,
-            'status' =>  FriendShipStatus::PENDING
+            'status' =>  FriendRequestStatus::PENDING
         ];
     
     }

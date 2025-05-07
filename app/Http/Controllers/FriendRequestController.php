@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FriendShip;
+use App\Enums\FriendRequestStatus;
 use App\Http\Requests\StoreFriendShipRequest;
 use App\Http\Requests\UpdateFriendShipRequest;
-use App\Http\Resources\FriendShipResource;
+use App\Http\Resources\FriendRequestResource;
+use App\Models\FriendRequest;
 
-class FriendShipController extends Controller
+class FriendRequestController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+
+        $friendRequests = FriendRequest::where('user_id', auth()->id())
+                                    ->where('status', FriendRequestStatus::PENDING)
+                                    ->get();
+
+        return (new FriendRequestResource($friendRequests));
     }
 
     /**
@@ -22,19 +28,19 @@ class FriendShipController extends Controller
      */
     public function store(StoreFriendShipRequest $request)
     {
-        $friendRequest = FriendShip::create(
+        $friendRequest = FriendRequest::create(
             $request->merge(['user_id' => auth()->id()])->toArray()
         );
         $friendRequest->load(['user', 'friend']);
 
-        return (new FriendShipResource($friendRequest));
+        return (new FriendRequestResource($friendRequest));
         
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(FriendShip $friendShip)
+    public function show(FriendRequest $friendShip)
     {
         //
     }
@@ -42,7 +48,7 @@ class FriendShipController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFriendShipRequest $request, FriendShip $friendShip)
+    public function update(UpdateFriendShipRequest $request, FriendRequest $friendShip)
     {
         //
     }
@@ -50,7 +56,7 @@ class FriendShipController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(FriendShip $friendShip)
+    public function destroy(FriendRequest $friendShip)
     {
         //
     }

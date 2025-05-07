@@ -3,7 +3,7 @@
 namespace App\Enums;
 
 
-enum FriendShipStatus: string
+enum FriendRequestStatus: string
 {
     case PENDING = 'pending';
     case ACCEPTED = 'accepted';

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\FriendShipController;
+use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +20,6 @@ Route::prefix('post')->name('post.')->group(function () {
     Route::apiResource('/', PostController::class);
 })->middleware('auth:api');
 
-Route::prefix('friendship')->name('friendship.')->group(function () {
-    Route::apiResource('/', FriendShipController::class);
+Route::prefix('friend-requests')->name('friend-requests.')->group(function () {
+    Route::apiResource('/', FriendRequestController::class);
 })->middleware('auth:api');
