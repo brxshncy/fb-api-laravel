@@ -1,6 +1,11 @@
 <?php
 
+<<<<<<< HEAD:tests/Feature/FriendRequest/FrindRequestTest.php
 use App\Models\FriendRequest;
+=======
+use App\Enums\FriendShipStatus;
+use App\Models\FriendShip;
+>>>>>>> 97dd94173cb461698aa1d92a7ff544f78624615a:tests/Feature/FriendShip/FriendShipTest.php
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

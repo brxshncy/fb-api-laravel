@@ -52,4 +52,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+
+    public function friendRequests (): HasMany 
+    {
+        return $this->hasMany(FriendRequest::class);
+    }
+
+
+    public function friends (): HasMany
+    {
+        return $this->hasMany(Friend::class);
+    }
 }
