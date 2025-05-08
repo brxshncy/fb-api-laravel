@@ -20,8 +20,9 @@ class FriendRequesObserver
      */
     public function updated(FriendRequest $friendRequest): void
     {
-        if ($friendRequest->status->wasChanged('status') && $friendRequest->status = FriendRequestStatus::ACCEPTED) {
-
+        if ($friendRequest->status->wasChanged('status') 
+            && $friendRequest->status = FriendRequestStatus::ACCEPTED) {
+                $friendRequest->acceptFriendRequest();
         }
     }
 

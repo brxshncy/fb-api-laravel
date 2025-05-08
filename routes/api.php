@@ -20,6 +20,6 @@ Route::prefix('post')->name('post.')->group(function () {
     Route::apiResource('/', PostController::class);
 })->middleware('auth:api');
 
-Route::prefix('friend-requests')->name('friend-requests.')->group(function () {
+Route::prefix('friend-request')->name('friend-request.')->group(function () {
     Route::apiResource('/', FriendRequestController::class);
 })->middleware('auth:api');

@@ -20,7 +20,7 @@ class FriendRequestController extends Controller
                                     ->where('status', FriendRequestStatus::PENDING)
                                     ->get();
 
-        return (new FriendRequestResource($friendRequests));
+        return FriendRequestResource::collection($friendRequests);
     }
 
     /**
@@ -32,7 +32,7 @@ class FriendRequestController extends Controller
             $request->merge(['user_id' => auth()->id()])->toArray()
         );
 
-        $friendRequest->load(['user', 'friend']);
+        $friendRequest->load(['user', 'friendRequestSentTo']);
 
         return (new FriendRequestResource($friendRequest));
         

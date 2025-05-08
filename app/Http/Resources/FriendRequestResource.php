@@ -17,7 +17,7 @@ class FriendRequestResource extends JsonResource
         return [
             'id' => $this->id, 
             'user' => new RegisterResource($this->whenLoaded('user')), 
-            'friend' => new RegisterResource($this->whenLoaded('friend')),
+            'friendRequestSentTo' => new RegisterResource($this->whenLoaded('friendRequestSentTo')),
             'status' => $this->status,
             'created_at' => $this->created_at,
         ];
