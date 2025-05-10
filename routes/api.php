@@ -21,5 +21,6 @@ Route::prefix('post')->name('post.')->group(function () {
 })->middleware('auth:api');
 
 Route::prefix('friend-request')->name('friend-request.')->group(function () {
-    Route::apiResource('/', FriendRequestController::class);
+    Route::apiResource('', FriendRequestController::class);
+
 })->middleware('auth:api');

@@ -16,7 +16,8 @@ class FriendRequestController extends Controller
     public function index()
     {
 
-        $friendRequests = FriendRequest::where('user_id', auth()->id())
+        $friendRequests = FriendRequest::with(['friendRequestSentTo'])
+                                    ->where('user_id', auth()->id())
                                     ->where('status', FriendRequestStatus::PENDING)
                                     ->get();
 
