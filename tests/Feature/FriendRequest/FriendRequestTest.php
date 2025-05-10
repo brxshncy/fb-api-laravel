@@ -43,7 +43,6 @@ describe('Friend Requests', function () {
             $response = $this->actingAs($this->user)
                             ->getJson(route('friend-request.index'));
 
-
             $response->assertStatus(200);
             $response->assertJsonStructure([
                 'data' => [[
@@ -66,6 +65,6 @@ describe('Friend Requests', function () {
            ]);
 
            $this->assertDatabaseHas('friends', ['user_id' => $this->user->id, 'friend_id' => $this->friendRequest[0]->friend_id]);
-            
+
     });
 });

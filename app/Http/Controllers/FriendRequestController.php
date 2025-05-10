@@ -51,12 +51,10 @@ class FriendRequestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFriendRequestRequest $request, FriendRequest $friendRequest)
+    public function update(UpdateFriendRequestRequest $request, FriendRequest $friendRequest): FriendRequestResource
     {
-
         $friendRequest->update(['status' => $request->decision]);
         $friendRequest->load(['friendRequestSentTo']);
-
         return (new FriendRequestResource($friendRequest));
     }
 

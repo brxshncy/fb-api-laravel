@@ -21,7 +21,6 @@ class FriendRequesObserver
      */
     public function updated(FriendRequest $friendRequest): void
     {
-        Log::info('updated', ['tes' => $friendRequest]);
         if ($friendRequest->wasChanged('status') 
             && $friendRequest->status = FriendRequestStatus::ACCEPTED) {
                 $friendRequest->acceptFriendRequest(friendRequestId: $friendRequest->friend_id);

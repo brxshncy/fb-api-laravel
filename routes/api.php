@@ -22,4 +22,4 @@ Route::prefix('post')->name('post.')->group(function () {
 
 Route::apiResource('friend-requests', FriendRequestController::class)
       ->names('friend-request')
-     ->middleware('auth:api');
+      ->middleware('auth:api');
