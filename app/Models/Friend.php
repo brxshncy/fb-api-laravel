@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Friend extends Model
 {
-    //
+    protected $guarded = [];
 
     public function user(): BelongsTo
     {

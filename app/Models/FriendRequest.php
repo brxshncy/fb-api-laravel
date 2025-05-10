@@ -31,12 +31,11 @@ class FriendRequest extends Model
         return $this->belongsTo(User::class, 'friend_id');
     }
 
-
-    public function acceptFriendRequest() : void 
+    public function acceptFriendRequest(int $friendRequestId) : void 
     {
         Friend::create([
             'user_id' => $this->user_id, 
-            'friend_id' => $this->friend_id,
+            'friend_id' => $friendRequestId,
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\FriendRequestStatus;
 use App\Http\Requests\StoreFriendShipRequest;
+use App\Http\Requests\UpdateFriendRequestRequest;
 use App\Http\Requests\UpdateFriendShipRequest;
 use App\Http\Resources\FriendRequestResource;
 use App\Models\FriendRequest;
@@ -50,10 +51,11 @@ class FriendRequestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreFriendShipRequest $request, FriendRequest $friendRequest): FriendRequestResource
+    public function update(UpdateFriendRequestRequest $request, FriendRequest $friendRequest)
     {
+
         $friendRequest->update(['status' => $request->decision]);
-        $friendRequest->load(['user', 'friend']);
+        $friendRequest->load(['friendRequestSentTo']);
 
         return (new FriendRequestResource($friendRequest));
     }

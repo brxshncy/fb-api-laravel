@@ -22,7 +22,7 @@ class UpdateFriendShipRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'decision' => 'required|in:accepted,declined',
         ];
     }
 }

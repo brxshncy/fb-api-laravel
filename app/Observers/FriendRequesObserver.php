@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Enums\FriendRequestStatus;
 use App\Models\FriendRequest;
+use Illuminate\Support\Facades\Log;
 
 class FriendRequesObserver
 {
@@ -20,9 +21,10 @@ class FriendRequesObserver
      */
     public function updated(FriendRequest $friendRequest): void
     {
-        if ($friendRequest->status->wasChanged('status') 
+        Log::info('updated', ['tes' => $friendRequest]);
+        if ($friendRequest->wasChanged('status') 
             && $friendRequest->status = FriendRequestStatus::ACCEPTED) {
-                $friendRequest->acceptFriendRequest();
+                $friendRequest->acceptFriendRequest(friendRequestId: $friendRequest->friend_id);
         }
     }
 

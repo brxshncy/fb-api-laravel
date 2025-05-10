@@ -11,7 +11,7 @@ class UpdateFriendRequestRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -22,7 +22,7 @@ class UpdateFriendRequestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'decision' => 'required|in:accepted,declined',
         ];
     }
 }

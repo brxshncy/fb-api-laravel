@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\FriendRequest;
+use App\Observers\FriendRequesObserver;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -20,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       
+       FriendRequest::observe(FriendRequesObserver::class);
     }
 }
