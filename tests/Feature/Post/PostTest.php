@@ -12,7 +12,7 @@ beforeEach(function () {
     $this->user =  User::factory()->create();
     $this->friend = User::factory()->create();
     $this->createFriendShip = Friend::create(['user_id' => $this->user->id, 'friend_id' => $this->friend->id]);
-    // $this->post = Post::factory()->create();
+    $this->post = Post::factory()->create();
     $this->postData = [
         'content' => fake()->realTextBetween(100, 300),
         'image_url' => fake()->imageUrl(),
@@ -65,5 +65,38 @@ describe('Post CRUD', function () {
             expect($posts->pluck('id'))->toContain($expectedId);
         }
 
+    });
+
+    it ("User can update their own post", function () {
+        $newContent = 'Updated the post content';
+        $newImageUrl = fake()->imageUrl(); // optional: testing optional field
+        $newPrivacy = PostPrivacy::FRIENDS; // assuming you're testing enum change too
+
+        $response = $this->actingAs($this->user)->putJson(
+            route('post.update', $this->post),
+            [
+                'content' => $newContent,
+                'image_url' => $newImageUrl,
+                'privacy' => $newPrivacy
+            ]
+        );
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                'id' => $this->post->id,
+                'content' => $newContent,
+                'image_url' => $newImageUrl,
+                'privacy' => $newPrivacy->value,
+            ]
+        ]);
+
+        $this->assertDatabaseHas('posts', [
+            'id' => $this->post->id,
+            'content' => $newContent,
+            'image_url' => $newImageUrl,
+            'privacy' => $newPrivacy->value,
+        ]);
     });
 });

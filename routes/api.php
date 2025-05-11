@@ -16,9 +16,9 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 
-Route::prefix('post')->name('post.')->group(function () {
-    Route::apiResource('/', PostController::class);
-})->middleware('auth:api');
+Route::apiResource('posts', PostController::class)
+      ->names('post')
+      ->middleware('auth:api');
 
 Route::apiResource('friend-requests', FriendRequestController::class)
       ->names('friend-request')
