@@ -18,6 +18,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
 
 Route::apiResource('posts', PostController::class)
       ->names('post')
+      ->can('update', 'post')
       ->middleware('auth:api');
 
 Route::apiResource('friend-requests', FriendRequestController::class)
