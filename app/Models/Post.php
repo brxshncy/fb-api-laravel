@@ -25,9 +25,10 @@ class Post extends Model
 
     public function scopeUserNewsFeed ($query) : Builder
     {
-        $friends = auth()->user()->friends()->pluck('id');
+        $friends = auth()->user()->friends()->pluck('friend_id');
 
-        return $query->whereIn('user_id', $friends->push(auth()->user()->id))
+        return $query->with('user')
+                     ->whereIn('user_id', $friends->push(auth()->user()->id))
                      ->latest();
     }
 }

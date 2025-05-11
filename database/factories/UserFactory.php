@@ -24,14 +24,14 @@ class UserFactory extends Factory
      * @return array<string, mixed>
      */
 
-    public function configure(): static
-    {
-        return $this->afterCreating(function (User $user) {
-            Post::factory()->create([
-                'user_id' => $user->id
-            ]);
-        });
-    }
+    // public function configure(): static
+    // {
+    //     return $this->afterCreating(function (User $user) {
+    //         Post::factory()->create([
+    //             'user_id' => $user->id
+    //         ]);
+    //     });
+    // }
 
     public function definition(): array
     {

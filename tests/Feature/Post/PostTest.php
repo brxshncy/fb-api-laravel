@@ -12,7 +12,7 @@ beforeEach(function () {
     $this->user =  User::factory()->create();
     $this->friend = User::factory()->create();
     $this->createFriendShip = Friend::create(['user_id' => $this->user->id, 'friend_id' => $this->friend->id]);
-    $this->post = Post::factory()->create();
+    // $this->post = Post::factory()->create();
     $this->postData = [
         'content' => fake()->realTextBetween(100, 300),
         'image_url' => fake()->imageUrl(),
@@ -45,10 +45,25 @@ describe('Post CRUD', function () {
         ]);
     });
 
-    it ("User can  see friend's post", function () {
-        $response = $this->actingAs($this->user)
-                          ->getJson(route('post.index'));
-        
-        dd($response->getContent());
+    it ("User can see their own and their friend's post only", function () {
+        $friends = User::factory()->count(10)->create();
+        $visiblePostIds = [];
+        foreach ($friends as $friend) {
+            Friend::create([
+                'user_id' => $this->user->id,
+                'friend_id' => $friend->id
+            ]);
+            $post = Post::factory()->for($friend)->create(['content' => "Post {$friend->id}"]);
+            array_push($visiblePostIds, $post->id);
+        }
+        $response = $this->actingAs($this->user)->getJson(route('post.index'));
+        $response->assertStatus(200);
+
+        $posts = collect($response->json('data'));
+   
+        foreach ($visiblePostIds as $expectedId) {
+            expect($posts->pluck('id'))->toContain($expectedId);
+        }
+
     });
 });
