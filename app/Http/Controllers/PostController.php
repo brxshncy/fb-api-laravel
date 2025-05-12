@@ -46,7 +46,10 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-      $post->update(attributes: $request->all());
+       if(auth()->user()->cannot('update', $post)) {
+        abort(403);
+       }
+       $post->update(attributes: $request->all());
        return (new PostResource($post));
     }
 

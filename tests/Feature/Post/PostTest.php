@@ -12,11 +12,17 @@ beforeEach(function () {
     $this->user =  User::factory()->create();
     $this->friend = User::factory()->create();
     $this->createFriendShip = Friend::create(['user_id' => $this->user->id, 'friend_id' => $this->friend->id]);
-    $this->post = Post::factory()->create();
+    $this->post = Post::factory()->create(['user_id' => $this->user->id]);
     $this->postData = [
         'content' => fake()->realTextBetween(100, 300),
         'image_url' => fake()->imageUrl(),
         'privacy' => PostPrivacy::PUBLIC,
+    ];
+
+    $this->updateData = [
+        'content' => 'Updated the post content',
+        'image_url' => fake()->imageUrl(), // optional: testing optional field
+        'privacy' => PostPrivacy::FRIENDS // assuming you're testing enum change too
     ];
 });
 
@@ -68,9 +74,7 @@ describe('Post CRUD', function () {
     });
 
     it ("User can update their own post", function () {
-        $newContent = 'Updated the post content';
-        $newImageUrl = fake()->imageUrl(); // optional: testing optional field
-        $newPrivacy = PostPrivacy::FRIENDS; // assuming you're testing enum change too
+      
 
         $response = $this->actingAs($this->user)->putJson(
             route('post.update', $this->post),
@@ -98,5 +102,16 @@ describe('Post CRUD', function () {
             'image_url' => $newImageUrl,
             'privacy' => $newPrivacy->value,
         ]);
+    });
+
+
+    it ("cannot update post when it's not owedned by login user", function () {
+        $response = $this->actingAs($friend->id)
+                         ->putJson(route('post.update', $this->post),[
+                'content' => $newContent,
+                'image_url' => $newImageUrl,
+                'privacy' => $newPrivacy
+                         ]);
+        //  $response->assertStatus(403);
     });
 });
