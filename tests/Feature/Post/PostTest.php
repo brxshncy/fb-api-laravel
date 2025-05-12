@@ -79,39 +79,39 @@ describe('Post CRUD', function () {
         $response = $this->actingAs($this->user)->putJson(
             route('post.update', $this->post),
             [
-                'content' => $newContent,
-                'image_url' => $newImageUrl,
-                'privacy' => $newPrivacy
+                'content' =>  $this->updateData['content'],
+                'image_url' => $this->updateData['image_url'],
+                'privacy' => $this->updateData['privacy']
             ]
         );
 
         $response->assertStatus(200);
-
+        // dd($response->json());
         $response->assertJson([
             'data' => [
                 'id' => $this->post->id,
-                'content' => $newContent,
-                'image_url' => $newImageUrl,
-                'privacy' => $newPrivacy->value,
+                'content' => $this->updateData['content'],
+                'image_url' => $this->updateData['image_url'],
+                'privacy' => PostPrivacy::FRIENDS->value,
             ]
         ]);
 
         $this->assertDatabaseHas('posts', [
             'id' => $this->post->id,
-            'content' => $newContent,
-            'image_url' => $newImageUrl,
-            'privacy' => $newPrivacy->value,
+            'content' => $this->updateData['content'],
+            'image_url' =>  $this->updateData['image_url'],
+            'privacy' =>  $this->updateData['privacy'],
         ]);
     });
 
 
-    it ("cannot update post when it's not owedned by login user", function () {
-        $response = $this->actingAs($friend->id)
+    it ("cannot update post when it's not owned by login user", function () {
+        $response = $this->actingAs($this->friend)
                          ->putJson(route('post.update', $this->post),[
-                'content' => $newContent,
-                'image_url' => $newImageUrl,
-                'privacy' => $newPrivacy
-                         ]);
-        //  $response->assertStatus(403);
+                'content' => $this->updateData['content'],
+                'image_url' =>  $this->updateData['image_url'],
+                'privacy' =>  $this->updateData['privacy']
+        ]);
+         $response->assertStatus(403);
     });
 });
