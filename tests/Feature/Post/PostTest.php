@@ -21,8 +21,8 @@ beforeEach(function () {
 
     $this->updateData = [
         'content' => 'Updated the post content',
-        'image_url' => fake()->imageUrl(), // optional: testing optional field
-        'privacy' => PostPrivacy::FRIENDS // assuming you're testing enum change too
+        'image_url' => fake()->imageUrl(), 
+        'privacy' => PostPrivacy::FRIENDS 
     ];
 });
 
@@ -44,23 +44,20 @@ describe('Post CRUD', function () {
             ]
         ]);
 
-        $this->assertDatabaseHas('posts', [
-            'content' => $this->postData['content'],
-            'image_url' => $this->postData['image_url'],
-            'privacy' => $this->postData['privacy'],
-        ]);
+        $this->assertDatabaseHas('posts',$this->postData);
     });
 
     it ("User can see their own and their friend's post only", function () {
         $friends = User::factory()->count(10)->create();
         $visiblePostIds = [];
+
         foreach ($friends as $friend) {
             Friend::create([
                 'user_id' => $this->user->id,
                 'friend_id' => $friend->id
             ]);
             $post = Post::factory()->for($friend)->create(['content' => "Post {$friend->id}"]);
-            array_push($visiblePostIds, $post->id);
+            $visiblePostIds[] = $post->id;
         }
         $response = $this->actingAs($this->user)->getJson(route('post.index'));
         $response->assertStatus(200);
@@ -75,7 +72,6 @@ describe('Post CRUD', function () {
 
     it ("User can update their own post", function () {
       
-
         $response = $this->actingAs($this->user)->putJson(
             route('post.update', $this->post),
             [
@@ -86,7 +82,6 @@ describe('Post CRUD', function () {
         );
 
         $response->assertStatus(200);
-        // dd($response->json());
         $response->assertJson([
             'data' => [
                 'id' => $this->post->id,
@@ -96,12 +91,8 @@ describe('Post CRUD', function () {
             ]
         ]);
 
-        $this->assertDatabaseHas('posts', [
-            'id' => $this->post->id,
-            'content' => $this->updateData['content'],
-            'image_url' =>  $this->updateData['image_url'],
-            'privacy' =>  $this->updateData['privacy'],
-        ]);
+        $this->assertDatabaseHas('posts', array_merge(['id' => $this->post->id], $this->updateData));
+
     });
 
 
