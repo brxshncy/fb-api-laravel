@@ -26,8 +26,8 @@ beforeEach(function () {
     ];
 });
 
-describe('Post CRUD', function () {
-    it ('User can create a facebook post', function () {
+describe('Logged in user ', function () {
+    it ('can create a facebook post', function () {
 
        $response = $this->actingAs($this->user)->postJson(route('post.store'), $this->postData);
 
@@ -47,7 +47,7 @@ describe('Post CRUD', function () {
         $this->assertDatabaseHas('posts',$this->postData);
     });
 
-    it ("User can see their own and their friend's post only", function () {
+    it ("can see their own and their friend's post only", function () {
         $friends = User::factory()->count(10)->create();
         $visiblePostIds = [];
 
@@ -70,7 +70,22 @@ describe('Post CRUD', function () {
 
     });
 
-    it ("User can update their own post", function () {
+    it ("can view single post details", function () {
+        $response = $this->actingAs($this->user)->getJson(route('post.show',  $this->post));
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'data' => [
+                'id' => $this->post->id,
+                'content' => $this->post->content,
+                'image_url' =>$this->post->image_url,
+                'privacy' => PostPrivacy::PUBLIC->value,
+            ]
+        ]);
+
+    });
+
+    it ("can update their own post", function () {
       
         $response = $this->actingAs($this->user)->putJson(
             route('post.update', $this->post),
