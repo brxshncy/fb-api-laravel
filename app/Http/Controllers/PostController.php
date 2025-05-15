@@ -58,6 +58,14 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+       abort_if(auth()->user()->cannot('delete', $post), 403);
+
+        // Delete the post
+        $post->delete();
+
+        // Return a response (redirect or JSON)
+        return response()->json([
+            'message' => 'Post deleted successfully'
+        ], 200);
     }
 }
